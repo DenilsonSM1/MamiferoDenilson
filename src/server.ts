@@ -60,6 +60,20 @@ app.put('/dogs/:name', async (request: FastifyRequest, reply: FastifyReply) => {
         console.error('Something went wrong:', error);
     }
 });
+app.delete('/dogs/:name', async (request: FastifyRequest, reply: FastifyReply) => {
+    const { name } = request.params as { name: string };
+
+    try {
+        const deletedDog = await prisma.dog.deleteMany({
+            where: { name: name },
+        });
+
+        reply.send('dog deleted.')
+
+    } catch (error) {
+        console.error('Something went wrong:', error);
+    }
+});
 
 
 
