@@ -45,6 +45,21 @@ app.get('/dogs/search', async (request: FastifyRequest, reply: FastifyReply) => 
         console.error('Something went wrong:', error);
     }
 });
+app.put('/dogs/:name', async (request: FastifyRequest, reply: FastifyReply) => {
+    const { name } = request.params as { name: string };
+    const dogData = request.body as Prisma.dogUpdateInput;;
+
+    try {
+        const updatedDog = await prisma.dog.updateMany({
+            where: { name: name },
+            data: dogData, 
+        });
+
+        reply.send('dog updated!')
+    } catch (error) {
+        console.error('Something went wrong:', error);
+    }
+});
 
 
 
