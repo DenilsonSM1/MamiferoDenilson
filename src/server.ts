@@ -23,6 +23,37 @@ app.post('/create', async (request: FastifyRequest, reply: FastifyReply) => {
     });
     reply.send('dog created')
 });
+app.get('/dogs', async (request: FastifyRequest, reply: FastifyReply) => {
+    const dogs = await prisma.dog.findMany();
+    reply.send(dogs)
+})
+
+app.get('/dogs/search', async (request: FastifyRequest, reply: FastifyReply) => {
+    const { query } = request.query as { query: string };
+    try {
+        const dogs = await prisma.dog.findMany({
+            where: {
+                OR: [
+                    { name: { contains: query, mode: 'insensitive' } },
+                    { description: { contains: query, mode: 'insensitive' } },
+                   
+                ],
+            },
+        });
+        reply.send(dogs);
+    } catch (error) {
+        console.error('Something went wrong:', error);
+    }
+});
+
+
+
+
+
+
+
+
+
 
 
 
