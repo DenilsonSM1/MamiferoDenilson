@@ -7,10 +7,10 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model cachorro {
-  id          Int      @id @default(autoincrement())
-  name        String?  @db.VarChar(30)
+model dog {
+  id          Int      @id
+  name        String?  @db.VarChar
   age         Int?
-  description String?  @db.VarChar(100)
+  description String?  @db.VarChar
   vaccinated  Boolean?
 }
