@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Button, StyleSheet, Switch, Text, TextInput, View } from 'react-native';
 import axios from 'axios';
 import { Platform } from 'react-native';
 
@@ -11,7 +11,7 @@ interface Dog {
   vaccinated: boolean;
 }
 
-let nextId = 1;
+
 
 const AddDogScreen = () => {
   const [name, setName] = useState('');
@@ -20,10 +20,14 @@ const AddDogScreen = () => {
   const [vaccinated, setVaccinated] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [dogs, setDogs] = useState<Dog[]>([]);
+  const [updateDogName, setUpdateDogName] = useState('');
+  const [updateDogAge, setUpdateDogAge] = useState('');
+  const [updateDogDescription, setUpdateDogDescription] = useState('');
+  const [updateDogVaccinated, setUpdateDogVaccinated] = useState(false);
 
   const handleAddDog = async () => {
     const newDog: Dog = {
-      id: nextId++,
+      id: Date.now(),
       name,
       age: parseInt(age),
       description,
@@ -82,6 +86,34 @@ const AddDogScreen = () => {
     }
   };
   
+  const handleUpdateDog = async () => {
+    const updatedDog: Dog = {
+      id: 0,
+      name: updateDogName,
+      age: parseInt(updateDogAge),
+      description: updateDogDescription,
+      vaccinated: updateDogVaccinated,
+    };
+
+    try {
+      const response = await axios.put(`http://localhost:3333/dogs/${updateDogName}`, updatedDog);
+      console.log('Cão atualizado:', response.data);
+      setDogs(prevDogs => {
+        const updatedDogs = prevDogs.map(dog => {
+          if (dog.name === updateDogName) {
+            return response.data;
+          } else {
+            return dog;
+          }
+        });
+        return updatedDogs;
+      });
+    } catch (error) {
+      console.error('Erro ao atualizar cão:', error);
+    }
+  };
+
+  
   
   
   
@@ -125,20 +157,49 @@ const AddDogScreen = () => {
       <Button title="Pesquisar" onPress={handleSearch} />
 
       <Text style={styles.subtitle}>Lista de Cães:</Text>
-      {dogs.map((dog) => (
-        <View key={dog.id} style={styles.dogContainer}>
-          <Text style={styles.dogInfo}>Nome: {dog.name}</Text>
-          <Text style={styles.dogInfo}>Idade: {dog.age}</Text>
-          <Text style={styles.dogInfo}>Descrição: {dog.description}</Text>
-          <Text style={styles.dogInfo}>
-            Vacinado: {dog.vaccinated ? 'Sim' : 'Não'}
-          </Text>
-          <Button title="Remover" onPress={() => handleDeleteDog(dog.name)} />
-        </View>
-      ))} 
+{dogs.map((dog, index) => (
+  <View key={`${dog.id}-${index}`} style={styles.dogContainer}>
+    <Text style={styles.dogInfo}>Nome: {dog.name}</Text>
+    <Text style={styles.dogInfo}>Idade: {dog.age}</Text>
+    <Text style={styles.dogInfo}>Descrição: {dog.description}</Text>
+    <Text style={styles.dogInfo}>
+      Vacinado: {dog.vaccinated ? 'Sim' : 'Não'}
+    </Text>
+    <Button title="Remover" onPress={() => handleDeleteDog(dog.name)} />
+  </View>
+))}
+<Text style={styles.title}>Atualizar Cão</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Nome do cão a ser atualizado"
+        value={updateDogName}
+        onChangeText={setUpdateDogName}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Nova idade"
+        value={updateDogAge}
+        onChangeText={setUpdateDogAge}
+        keyboardType={Platform.OS === 'ios' ? 'number-pad' : 'numeric'}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Nova descrição"
+        value={updateDogDescription}
+        onChangeText={setUpdateDogDescription}
+      />
+      <View style={styles.switchContainer}>
+        <Text style={styles.switchLabel}>Nova vacinação:</Text>
+        <Switch
+          value={updateDogVaccinated}
+          onValueChange={setUpdateDogVaccinated}
+        />
+      </View>
+      <Button title="Atualizar" onPress={handleUpdateDog} />
     </View>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {
@@ -164,7 +225,7 @@ const styles = StyleSheet.create({
   checkboxContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 16,
+    marginBottom: 8,
   },
   checkboxLabel: {
     marginRight: 8,
@@ -185,6 +246,27 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 5,
   },
+  updateDogContainer: {
+    marginTop: 10,
+  },
+  updateDogInput: {
+    width: '100%',
+    height: 40,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 4,
+    marginBottom: 8,
+    paddingLeft: 8,
+  },
+  switchContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  switchLabel: {
+    marginRight: 10,
+  },
 });
+
 
 export default AddDogScreen;
