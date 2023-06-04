@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
 import axios from 'axios';
+import { Platform } from 'react-native';
 
 interface Dog {
   id: number;
@@ -9,11 +10,10 @@ interface Dog {
   description: string;
   vaccinated: boolean;
 }
+
 let nextId = 1;
 
-
 const AddDogScreen = () => {
-
   const [name, setName] = useState('');
   const [age, setAge] = useState('');
   const [description, setDescription] = useState('');
@@ -27,7 +27,8 @@ const AddDogScreen = () => {
       description,
       vaccinated,
     };
-  
+    
+
     try {
       const response = await axios.post('http://localhost:3333/create', newDog);
       console.log('Cão adicionado:', response.data);
@@ -35,10 +36,27 @@ const AddDogScreen = () => {
       console.error('Erro ao adicionar cão:', error);
     }
   };
+ 
+  const [dogs, setDogs] = useState<Dog[]>([]);
 
+  useEffect(() => {
+    
+    const fetchDogs = async () => {
+      try {
+        const response = await axios.get('http://localhost:3333/dogs');
+        const fetchedDogs: Dog[] = response.data;
+        setDogs(fetchedDogs);
+        console.log('Cães obtidos:', fetchedDogs);
+      } catch (error) {
+        console.error('Erro ao obter cães:', error);
+      }
+    };
 
+   
+    fetchDogs();
+  }, []);
 
-  return(
+  return (
     <View style={styles.container}>
       <Text style={styles.title}>Adicionar Cão</Text>
       <TextInput
@@ -78,13 +96,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 16,
-    backgroundColor: '#f5f5f5',
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 16,
-    color: '#333',
   },
   input: {
     width: '100%',
@@ -94,7 +110,6 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     marginBottom: 8,
     paddingLeft: 8,
-    backgroundColor: '#fff',
   },
   checkboxContainer: {
     flexDirection: 'row',
@@ -103,7 +118,6 @@ const styles = StyleSheet.create({
   },
   checkboxLabel: {
     marginRight: 8,
-    color: '#333',
   },
 });
 
