@@ -9,9 +9,14 @@ interface Dog {
   description: string;
   vaccinated: boolean;
 }
-
+let nextId = 1;
 const AddDogScreen = () => {
 
+  const [name, setName] = useState('');
+  const [age, setAge] = useState('');
+  const [description, setDescription] = useState('');
+  const [vaccinated, setVaccinated] = useState(false);
+  
 };
 
 export default AddDogScreen;
