@@ -40,8 +40,36 @@ const AddDogScreen = () => {
 
   return(
     <View >
+    <Text>Adicionar Cão</Text>
+    <TextInput
       
+      placeholder="Nome"
+      value={name}
+      onChangeText={setName}
+    />
+    <TextInput
+      
+      placeholder="Idade"
+      value={age}
+      onChangeText={setAge}
+      keyboardType="numeric"
+    />
+    <TextInput
+      
+      placeholder="Descrição"
+      value={description}
+      onChangeText={setDescription}
+    />
+    <View >
+      <Text >Vacinado:</Text>
+      <Button
+        title={vaccinated ? 'Sim' : 'Não'}
+        onPress={() => setVaccinated(!vaccinated)}
+      />
     </View>
+    <Button title="Adicionar" onPress={handleAddDog} />
+  </View>
   )
 };
+
 export default AddDogScreen;
