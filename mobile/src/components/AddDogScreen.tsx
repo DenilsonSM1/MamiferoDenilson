@@ -56,6 +56,20 @@ const AddDogScreen = () => {
     fetchDogs();
   }, []);
 
+  const handleDeleteDog = async (name: string) => {
+    try {
+      await axios.delete(`http://localhost:3333/dogs/${name}`);
+      setDogs(dogs.filter((dog) => dog.name !== name));
+      console.log('Cão removido:', name);
+    } catch (error) {
+      console.error('Erro ao remover cão:', error);
+    }
+  };
+  
+  
+  
+  
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Adicionar Cão</Text>
@@ -96,8 +110,9 @@ const AddDogScreen = () => {
           <Text style={styles.dogInfo}>
             Vacinado: {dog.vaccinated ? 'Sim' : 'Não'}
           </Text>
+          <Button title="Remover" onPress={() => handleDeleteDog(dog.name)} />
         </View>
-      ))}
+      ))} 
     </View>
   );
 };
