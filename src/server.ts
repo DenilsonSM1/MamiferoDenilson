@@ -76,20 +76,6 @@ app.delete('/dogs/:name', async (request: FastifyRequest, reply: FastifyReply) =
 });
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 const start = async () => {
     try {
         await app.listen({ port: 3333 });
