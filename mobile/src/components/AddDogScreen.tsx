@@ -39,37 +39,72 @@ const AddDogScreen = () => {
 
 
   return(
-    <View >
-    <Text>Adicionar Cão</Text>
-    <TextInput
-      
-      placeholder="Nome"
-      value={name}
-      onChangeText={setName}
-    />
-    <TextInput
-      
-      placeholder="Idade"
-      value={age}
-      onChangeText={setAge}
-      keyboardType="numeric"
-    />
-    <TextInput
-      
-      placeholder="Descrição"
-      value={description}
-      onChangeText={setDescription}
-    />
-    <View >
-      <Text >Vacinado:</Text>
-      <Button
-        title={vaccinated ? 'Sim' : 'Não'}
-        onPress={() => setVaccinated(!vaccinated)}
+    <View style={styles.container}>
+      <Text style={styles.title}>Adicionar Cão</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Nome"
+        value={name}
+        onChangeText={setName}
       />
+      <TextInput
+        style={styles.input}
+        placeholder="Idade"
+        value={age}
+        onChangeText={setAge}
+        keyboardType="numeric"
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Descrição"
+        value={description}
+        onChangeText={setDescription}
+      />
+      <View style={styles.checkboxContainer}>
+        <Text style={styles.checkboxLabel}>Vacinado:</Text>
+        <Button
+          title={vaccinated ? 'Sim' : 'Não'}
+          onPress={() => setVaccinated(!vaccinated)}
+        />
+      </View>
+      <Button title="Adicionar" onPress={handleAddDog} />
     </View>
-    <Button title="Adicionar" onPress={handleAddDog} />
-  </View>
-  )
+  );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 16,
+    backgroundColor: '#f5f5f5',
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 16,
+    color: '#333',
+  },
+  input: {
+    width: '100%',
+    height: 40,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 4,
+    marginBottom: 8,
+    paddingLeft: 8,
+    backgroundColor: '#fff',
+  },
+  checkboxContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  checkboxLabel: {
+    marginRight: 8,
+    color: '#333',
+  },
+});
 
 export default AddDogScreen;
