@@ -86,6 +86,18 @@ const AddDogScreen = () => {
         />
       </View>
       <Button title="Adicionar" onPress={handleAddDog} />
+
+      <Text style={styles.subtitle}>Lista de Cães:</Text>
+      {dogs.map((dog) => (
+        <View key={dog.id} style={styles.dogContainer}>
+          <Text style={styles.dogInfo}>Nome: {dog.name}</Text>
+          <Text style={styles.dogInfo}>Idade: {dog.age}</Text>
+          <Text style={styles.dogInfo}>Descrição: {dog.description}</Text>
+          <Text style={styles.dogInfo}>
+            Vacinado: {dog.vaccinated ? 'Sim' : 'Não'}
+          </Text>
+        </View>
+      ))}
     </View>
   );
 };
@@ -118,6 +130,22 @@ const styles = StyleSheet.create({
   },
   checkboxLabel: {
     marginRight: 8,
+  },
+  subtitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  dogContainer: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 4,
+    padding: 10,
+    marginBottom: 10,
+  },
+  dogInfo: {
+    fontSize: 16,
+    marginBottom: 5,
   },
 });
 
