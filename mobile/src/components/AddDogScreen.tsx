@@ -18,6 +18,8 @@ const AddDogScreen = () => {
   const [age, setAge] = useState('');
   const [description, setDescription] = useState('');
   const [vaccinated, setVaccinated] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [dogs, setDogs] = useState<Dog[]>([]);
 
   const handleAddDog = async () => {
     const newDog: Dog = {
@@ -36,8 +38,22 @@ const AddDogScreen = () => {
       console.error('Erro ao adicionar cão:', error);
     }
   };
+
+
+  const handleSearch = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:3333/dogs/search?query=${searchQuery}`
+      );
+      const searchedDogs: Dog[] = response.data;
+      setDogs(searchedDogs);
+      console.log('Cães encontrados:', searchedDogs);
+    } catch (error) {
+      console.error('Erro ao pesquisar cães:', error);
+    }
+  };
  
-  const [dogs, setDogs] = useState<Dog[]>([]);
+  
 
   useEffect(() => {
     
@@ -100,6 +116,13 @@ const AddDogScreen = () => {
         />
       </View>
       <Button title="Adicionar" onPress={handleAddDog} />
+      <TextInput
+        style={styles.input}
+        placeholder="Digite o nome ou descrição"
+        value={searchQuery}
+        onChangeText={setSearchQuery}
+      />
+      <Button title="Pesquisar" onPress={handleSearch} />
 
       <Text style={styles.subtitle}>Lista de Cães:</Text>
       {dogs.map((dog) => (
