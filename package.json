@@ -16,7 +16,9 @@
     "@fastify/cors": "^8.2.1",
     "@prisma/client": "^4.14.1",
     "fastify": "^4.17.0",
-    "prisma": "^4.14.1"
+    "prisma": "^4.14.1",
+    "uuid": "^8.3.2",
+    "uuidv4": "^6.2.13"
   },
   "devDependencies": {
     "@types/node": "^20.2.3",

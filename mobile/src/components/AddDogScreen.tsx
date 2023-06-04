@@ -11,7 +11,7 @@ interface Dog {
   vaccinated: boolean;
 }
 
-
+let Id = 1;
 
 const AddDogScreen = () => {
   const [name, setName] = useState('');
@@ -27,7 +27,7 @@ const AddDogScreen = () => {
 
   const handleAddDog = async () => {
     const newDog: Dog = {
-      id: Date.now(),
+      id: Id++,
       name,
       age: parseInt(age),
       description,
@@ -88,15 +88,18 @@ const AddDogScreen = () => {
   
   const handleUpdateDog = async () => {
     const updatedDog: Dog = {
-      id: 0,
+      id: dogs.find(dog => dog.name === updateDogName)?.id || 0,
       name: updateDogName,
       age: parseInt(updateDogAge),
       description: updateDogDescription,
       vaccinated: updateDogVaccinated,
     };
-
+  
     try {
-      const response = await axios.put(`http://localhost:3333/dogs/${updateDogName}`, updatedDog);
+      const response = await axios.put(
+        `http://localhost:3333/dogs/${updateDogName}`,
+        updatedDog
+      );
       console.log('Cão atualizado:', response.data);
       setDogs(prevDogs => {
         const updatedDogs = prevDogs.map(dog => {
@@ -112,6 +115,8 @@ const AddDogScreen = () => {
       console.error('Erro ao atualizar cão:', error);
     }
   };
+  
+  
 
   
   

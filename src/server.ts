@@ -4,7 +4,7 @@ import { dog } from "@prisma/client";
 import cors from '@fastify/cors';
 import { request } from 'http';
 
-const teste = "numbver";
+
 
 const prisma = new PrismaClient();
 const app = Fastify();

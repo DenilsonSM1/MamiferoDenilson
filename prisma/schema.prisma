@@ -8,9 +8,10 @@ datasource db {
 }
 
 model dog {
-  id          Int      @id
+  id          Int      @id @default(autoincrement())
   name        String?  @db.VarChar
   age         Int?
   description String?  @db.VarChar
   vaccinated  Boolean?
+  
 }
